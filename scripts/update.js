@@ -17,15 +17,14 @@ get('https://dev.to/api/articles?username=peibolsang', (res) => {
 
 function updateReadme(post) {
   const content = stripIndent`
-    # ${post.title}
-    ${post.description}
-    [Read more](${post.canonical_url})
+    # ${post[0].title}
+    ${post[0].description}
+    [Read more](${post[0].canonical_url})
   `;
   const formatted = format(content, {
     parser: 'markdown',
   });
 
   let header = readFileSync('./HEADER.md');
-  writeFileSync('./README.md',header)
-  writeFileSync('./README.md', formatted);
+  writeFileSync('./README.md', header+formatted);
 }
