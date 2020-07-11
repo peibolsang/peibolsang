@@ -24,3 +24,9 @@ jobs:
     # Runs a single command using the runners shell
     - name: Run a one-line script
       run: npm ci
+
+    # Runs the stuff
+    - run: node ./scripts/update.js
+    - uses: mikeal/publish-to-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

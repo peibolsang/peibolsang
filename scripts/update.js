@@ -1,5 +1,5 @@
 const { get } = require('https');
-const { writeFileSync } = require('fs');
+const { writeFileSync, readFileSync } = require('fs');
 const { format } = require('prettier');
 const { stripIndent } = require('common-tags');
 
@@ -17,20 +17,15 @@ get('https://dev.to/api/articles?username=peibolsang', (res) => {
 
 function updateReadme(post) {
   const content = stripIndent`
-    ```javascript
-    let me = '👶🏻'
-    while (me != '💀') {
-        //TODO
-    }
-    ```
     # ${post.title}
     ${post.description}
     [Read more](${post.canonical_url})
-    
-    ![Banner](${post.banner})
   `;
   const formatted = format(content, {
     parser: 'markdown',
   });
+
+  let header = readFileSync('./HEADER.md');
+  writeFileSync('./README.md',header)
   writeFileSync('./README.md', formatted);
 }
