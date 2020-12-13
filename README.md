@@ -7,7 +7,7 @@ while (me != '💀') {
 **My last article on [dev.to](https://dev.to/@peibolsang)**
 
 
-# Cloud-Native Development just clicked for me
+# A serverless-first approach to multi-cloud with AWS
 
-It is already 2020 and many companies are still debating what cloud development strategy they should...
-[Read more](https://dev.to/peibolsang/cloud-native-development-just-clicked-for-me-73)
+What happened? How much of an oxymoron this post title could be? Serverless and multi-clou...
+[Read more](https://dev.to/peibolsang/a-serverless-first-approach-to-multi-cloud-with-aws-een)
