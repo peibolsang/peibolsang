@@ -7,7 +7,7 @@ while (me != '💀') {
 **My last article on [dev.to](https://dev.to/@peibolsang)**
 
 
-# A serverless-first approach to multi-cloud with AWS
+# The client is not always right: another twist in modern front-end development (Part 1)
 
-What happened? How much of an oxymoron this post title could be? Serverless and multi-clou...
-[Read more](https://dev.to/peibolsang/a-serverless-first-approach-to-multi-cloud-with-aws-een)
+Well, in line with the rest of the year, the end of 2020 has been an incredibly eventful week for the...
+[Read more](https://dev.to/peibolsang/the-client-is-not-always-right-another-twist-in-modern-front-end-development-part-1-1olp)
