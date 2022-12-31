@@ -20,6 +20,8 @@ const MoreStories = ({ posts }: Props) => {
             author={post.author}
             slug={post.slug}
             excerpt={post.excerpt}
+            comments_count={post.comments_count}
+            reactions_count={post.reactions_count}
           />
         ))}
       </div>

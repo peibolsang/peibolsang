@@ -13,6 +13,8 @@ type PostType = {
     url: string
   }
   content: string
+  comments_count: string
+  reactions_count: string
 }
 
 export default PostType

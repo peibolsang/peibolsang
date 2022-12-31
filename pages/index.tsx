@@ -30,6 +30,8 @@ export default function Index({ allPosts }: Props) {
                 author={heroPost.author}
                 slug={heroPost.slug}
                 excerpt={heroPost.excerpt}
+                comments_count={heroPost.comments_count}
+                reactions_count={heroPost.reactions_count}
               />
             )}
           </div>

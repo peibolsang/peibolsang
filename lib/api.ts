@@ -25,7 +25,9 @@ export async function getPostFromIssue(item) {
     ogImage: {
       url: item.user.avatar_url
     },
-    content: item.body
+    content: item.body,
+    comments_count: item.comments,
+    reactions_count: item.reactions.total_count
 
   }
 
