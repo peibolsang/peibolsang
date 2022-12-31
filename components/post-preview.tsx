@@ -13,7 +13,7 @@ type Props = {
     url: string
   } 
   comments_count: string,
-  reactions_count: string
+  reactions_count: string,
 }
 
 const PostPreview = ({

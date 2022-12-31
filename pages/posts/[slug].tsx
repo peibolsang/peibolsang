@@ -41,6 +41,7 @@ export default function Post({ post, morePosts, preview }: Props) {
                 title={post.title}
                 date={post.date}
                 author={post.author}
+                reactions={post.reactions}
               />
               <PostBody content={post.content} />
             </article>

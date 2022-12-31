@@ -27,7 +27,18 @@ export async function getPostFromIssue(item) {
     },
     content: item.body,
     comments_count: item.comments,
-    reactions_count: item.reactions.total_count
+    reactions_count: item.reactions.total_count,
+
+    reactions:{
+      plusone: item.reactions['+1'],
+      minusone: item.reactions['-1'],
+      laugh: item.reactions.laugh,
+      hooray: item.reactions.hooray,
+      confused: item.reactions.confused,
+      heart: item.reactions.heart,
+      rocket: item.reactions.rocket,
+      eyes: item.reactions.eyes
+    }
 
   }
 
