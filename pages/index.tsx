@@ -21,8 +21,8 @@ export default function Index({ allPosts }: Props) {
           <title>Pablo Bermejo</title>
         </Head>
         <Container>
-          <Intro />
-          <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-16 lg:gap-x-32 gap-y-20 md:gap-y-32 mb-16 bg-gray-100 p-5">
+          <Intro/>
+          <div className="grid grid-cols-1 md:grid-cols-1 md:gap-x-16 lg:gap-x-32 gap-y-20 md:gap-y-32 mb-16 bg-gray-100 p-5">
             {heroPost && (
               <PostPreview
                 title={heroPost.title}

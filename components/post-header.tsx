@@ -38,7 +38,7 @@ const PostHeader = ({ title, date, author, reactions }: Props) => {
       <div className="hidden md:block md:mb-6">
         <Avatar name={author.name} picture={author.picture} />
       </div>
-      <div className="max-w-2xl">
+      <div>
         <div className="block md:hidden mb-6">
           <Avatar name={author.name} picture={author.picture} />
         </div>

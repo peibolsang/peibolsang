@@ -7,7 +7,7 @@ const Intro = () => {
        Pablo Bermejo.
       </h1>
       <h4 className="text-center md:text-left text-lg mt-5 md:pl-8">
-        A tech blog using {CMS_NAME}.
+        A tech blog using {CMS_NAME}
       </h4>
     </section>
   )
