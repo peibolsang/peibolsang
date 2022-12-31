@@ -4,6 +4,7 @@ import { MAX_WORDS } from './constants'
 import { USER_NAMES } from './constants'
 import { REPO_NAME } from './constants'
 import { LABEL } from './constants'
+import markdownToHtml from '../lib/markdownToHtml'
 
 
 export async function getPostFromIssue(item) {
@@ -21,7 +22,7 @@ export async function getPostFromIssue(item) {
     title: item.title, 
     date: item.created_at,
     author: issueauthor,
-    excerpt: createExcerpt(item.body),
+    excerpt: await markdownToHtml(createExcerpt(item.body) || ''),
     ogImage: {
       url: item.user.avatar_url
     },
