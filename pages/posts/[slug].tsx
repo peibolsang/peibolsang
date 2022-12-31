@@ -5,10 +5,9 @@ import PostBody from '../../components/post-body'
 import Header from '../../components/header'
 import PostHeader from '../../components/post-header'
 import Layout from '../../components/layout'
-import { getPostFromNumber, getAllPosts } from '../../lib/api'
+import { getPost, getAllPosts } from '../../lib/api'
 import PostTitle from '../../components/post-title'
 import Head from 'next/head'
-import { CMS_NAME } from '../../lib/constants'
 import markdownToHtml from '../../lib/markdownToHtml'
 import type PostType from '../../interfaces/post'
 
@@ -59,7 +58,7 @@ type Params = {
 }
 
 export async function getStaticProps({ params }: Params) {
-  const post = await getPostFromNumber(params.slug)
+  const post = await getPost(params.slug)
   const content = await markdownToHtml(post.content || '')
 
   return {
