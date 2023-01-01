@@ -1,20 +1,16 @@
 import Author from '../interfaces/author'
-import Comment from '../interfaces/comment'
 
-type PostType = {
+type CommentType = {
   slug: {
     number: string,
     url: string
   },
-  title: string
   date: string
   author: Author
-  excerpt: string
   ogImage: {
     url: string
   }
   content: string
-  comments_count: string
   reactions_count: string
   reactions:{
     plusone: string
@@ -26,7 +22,6 @@ type PostType = {
     rocket: string
     eyes: string
   }
-  comments: Array<Comment>
 }
 
-export default PostType
+export default CommentType

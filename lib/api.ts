@@ -1,13 +1,19 @@
 import PostType from '../interfaces/post'
 import Author from '../interfaces/author';
+import CommentType from '../interfaces/comment';
 import { MAX_WORDS } from './constants'
 import { USER_NAMES } from './constants'
 import { REPO_NAME } from './constants'
 import { LABEL } from './constants'
 import markdownToHtml from '../lib/markdownToHtml'
 
+/*
+ *
+ POST FUNCTIONS
+ * 
+ */
 
-export async function getPostFromIssue(item) {
+export async function getPostFromGitHubIssue(item) {
 
   const issueauthor: Author = {
     name: item.user.login,
@@ -39,12 +45,10 @@ export async function getPostFromIssue(item) {
       heart: item.reactions.heart,
       rocket: item.reactions.rocket,
       eyes: item.reactions.eyes
-    }
-
+    },
+    comments: []
   }
-
   return post;
-
 }
 
 function createExcerpt(text) {
@@ -65,7 +69,7 @@ export async function getPost(number){
   // Make the API request
   const response = await fetch(`https://api.github.com/repos/${USER_NAMES[0]}/${REPO_NAME}/issues/${number}`);
   const data = await response.json();
-  return getPostFromIssue(data);
+  return getPostFromGitHubIssue(data);
 }
 
 export async function getAllPosts() {
@@ -78,8 +82,61 @@ export async function getAllPosts() {
 
   const posts = Promise.all(data
       .filter(item => USER_NAMES.includes(item.user.login))
-      .map(async (item)=> await getPostFromIssue(item))
+      .map(async (item)=> await getPostFromGitHubIssue(item))
   )
 
   return posts
 }
+
+/*
+ *
+ COMMENT FUNCTIONS 
+ * 
+ */
+
+export function getCommentFromGitHubIssue(item) {
+
+  const issueauthor: Author = {
+    name: item.user.login,
+    picture: item.user.avatar_url
+  }
+
+  const comment: CommentType = {
+    slug: {
+      number: item.id,
+      url: item.url
+    },
+    date: item.created_at,
+    author: issueauthor,
+    ogImage: {
+      url: item.user.avatar_url
+    },
+    content: item.body,
+    reactions_count: item.reactions.total_count,
+
+    reactions:{
+      plusone: item.reactions['+1'],
+      minusone: item.reactions['-1'],
+      laugh: item.reactions.laugh,
+      hooray: item.reactions.hooray,
+      confused: item.reactions.confused,
+      heart: item.reactions.heart,
+      rocket: item.reactions.rocket,
+      eyes: item.reactions.eyes
+    },
+
+  }
+  return comment;
+}
+
+export async function getPostComments(number){
+  // Make the API request
+  const response = await fetch(`https://api.github.com/repos/${USER_NAMES[0]}/${REPO_NAME}/issues/${number}/comments`);
+  const data = await response.json();
+  
+  const comments = Promise.all(data
+    .map(async (item)=> getCommentFromGitHubIssue(item))
+  )
+  return comments
+}
+

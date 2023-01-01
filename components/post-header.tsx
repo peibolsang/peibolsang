@@ -2,6 +2,7 @@ import Avatar from './avatar'
 import DateFormatter from './date-formatter'
 import PostTitle from './post-title'
 import type Author from '../interfaces/author'
+import Reactions from './reactions'
 
 type Props = {
   title: string
@@ -46,19 +47,7 @@ const PostHeader = ({ title, date, author, reactions }: Props) => {
           <DateFormatter dateString={date} />
         </div>
       </div>
-      <div className="mt-5">
-      {Object.entries(reactions).map(([key, value]) => {
-        if (value.toString() !== "0") {
-          return (
-            <span className="mr-5 mt-5">
-              <span className="text-l mr-1">{value}</span>
-              <span className="text-l mr-1" dangerouslySetInnerHTML={{ __html: icons[key] }}></span>
-            </span>
-          );
-        }
-        return null;
-      })}
-    </div>
+      <Reactions reactions={reactions}/>
     </>
   )
 }

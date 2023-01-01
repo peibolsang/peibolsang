@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
 import Container from '../../components/container'
+import PostComments from '../../components/post-comments'
 import PostBody from '../../components/post-body'
 import Header from '../../components/header'
 import PostHeader from '../../components/post-header'
 import Layout from '../../components/layout'
-import { getPost, getAllPosts } from '../../lib/api'
+import { getPost, getAllPosts, getPostComments } from '../../lib/api'
 import PostTitle from '../../components/post-title'
 import Head from 'next/head'
 import markdownToHtml from '../../lib/markdownToHtml'
@@ -17,7 +18,7 @@ type Props = {
   preview?: boolean
 }
 
-export default function Post({ post, morePosts, preview }: Props) {
+export default function Post({ post, preview }: Props) {
   const router = useRouter()
   if (!router.isFallback && !post?.slug.number) {
     return <ErrorPage statusCode={404} />
@@ -48,6 +49,11 @@ export default function Post({ post, morePosts, preview }: Props) {
           </>
         )}
       </Container>
+      <Container>
+        <div className="border-t-2 border-slate-200 pt-5">
+          <PostComments comments={post.comments} />
+        </div>
+      </Container>
     </Layout>
   )
 }
@@ -60,6 +66,7 @@ type Params = {
 
 export async function getStaticProps({ params }: Params) {
   const post = await getPost(params.slug)
+  post.comments = await getPostComments(params.slug)
   const content = await markdownToHtml(post.content || '')
 
   return {

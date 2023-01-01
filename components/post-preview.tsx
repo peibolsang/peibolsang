@@ -50,12 +50,12 @@ const PostPreview = ({
 
       <div className="flex items-center mt-4">
           <span className="mr-5">
-              <span className="text-l mr-1">{comments_count}</span>
               <span className="text-l mr-1">&#x1F4AC;</span>
+              <span className="text-l mr-1">{comments_count}</span>
           </span>
           <span className="mr-5">
-              <span className="text-l mr-1">{reactions_count}</span>
               <span className="text-l mr-1">&#x1F642;</span>
+              <span className="text-l mr-1">{reactions_count}</span>
           </span>
       </div>
   
