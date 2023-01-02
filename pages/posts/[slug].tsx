@@ -80,7 +80,6 @@ export async function getStaticProps({ params }: Params) {
   }
 }
 
-
 export async function getStaticPaths() {
   const posts = await getAllPosts()
 
