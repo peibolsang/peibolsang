@@ -24,7 +24,7 @@ export async function generateTldr(text){
   try{
     const response = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt: `Summarize in about ${MAX_WORDS} words: ${text}\n\n`,
+      prompt: `Summarize and give me a TL;DR: ${text}\n\n`,
       temperature: 0.7,
       max_tokens: 60,
       top_p: 1.0,
