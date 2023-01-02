@@ -8,12 +8,36 @@ import { REPO_NAME } from './constants'
 import { LABEL } from './constants'
 import {HOME_OG_IMAGE_URL} from './constants'
 import markdownToHtml from '../lib/markdownToHtml'
+import { Configuration, OpenAIApi } from 'openai';
 
 /*
  *
  POST FUNCTIONS
  * 
  */
+
+export async function generateTldr(text){
+  const configuration = new Configuration({
+    apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+  });
+  const openai = new OpenAIApi(configuration);
+  try{
+    const response = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: `Summarize in ${MAX_WORDS} words: ${text}\n\n`,
+      temperature: 0.7,
+      max_tokens: 60,
+      top_p: 1.0,
+      frequency_penalty: 0.0,
+      presence_penalty: 1,
+    });
+    return response.data.choices[0].text+"."
+    }
+    catch(err){
+      return createExcerpt(text)
+    }
+}
+
 
 export async function getPostFromGitHubIssue(item) {
 
@@ -34,6 +58,7 @@ export async function getPostFromGitHubIssue(item) {
     eyes: item.reactions.eyes
   }
 
+  const excerpt = await generateTldr(item.body)
   const post: PostType = {
     slug: {
       number: item.number,
@@ -42,7 +67,7 @@ export async function getPostFromGitHubIssue(item) {
     title: item.title, 
     date: item.created_at,
     author: issueauthor,
-    excerpt: await markdownToHtml(createExcerpt(item.body) || ''),
+    excerpt: await markdownToHtml(excerpt || ''),
     ogImage: {
       url: HOME_OG_IMAGE_URL
     },
