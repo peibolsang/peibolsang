@@ -18,7 +18,8 @@ export async function getPostFromGitHubIssue(item) {
 
   const issueauthor: Author = {
     name: item.user.login,
-    picture: item.user.avatar_url
+    picture: item.user.avatar_url,
+    html_url: item.user.html_url
   }
 
   const issuereactions: Reactions = {
@@ -98,7 +99,8 @@ export async function getCommentFromGitHubIssue(item) {
 
   const commentauthor: Author = {
     name: item.user.login,
-    picture: item.user.avatar_url
+    picture: item.user.avatar_url,
+    html_url: item.user.html_url
   }
 
   const commentreactions: Reactions = {

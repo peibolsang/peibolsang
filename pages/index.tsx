@@ -22,7 +22,10 @@ export default function Index({ allPosts }: Props) {
         </Head>
         <Container>
           <Intro/>
-          <div className="grid grid-cols-1 md:grid-cols-1 md:gap-x-16 lg:gap-x-32 gap-y-20 md:gap-y-32 mb-16 bg-gray-100 p-5">
+          <h3 className="mb-8 text-4xl md:text-4xl font-bold tracking-tighter leading-tight">
+            Featured Story
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-1 md:gap-x-16 lg:gap-x-32 gap-y-20 mb-12 border-2 border-gray-300 rounded-xl p-5">
             {heroPost && (
               <PostPreview
                 title={heroPost.title}

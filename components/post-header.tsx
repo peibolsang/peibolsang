@@ -17,18 +17,18 @@ const PostHeader = ({ title, date, author, issuenumber, reactions }: Props) => {
     <>
       <PostTitle>{title}</PostTitle>
       <div className="hidden md:block md:mb-6">
-        <Avatar name={author.name} picture={author.picture} />
+        <Avatar name={author.name} picture={author.picture} html_url={author.html_url} />
       </div>
       <div>
         <div className="block md:hidden mb-6">
-          <Avatar name={author.name} picture={author.picture} />
+          <Avatar name={author.name} picture={author.picture} html_url={author.html_url} />
         </div>
         <div className="text-l mb-5">
           <DateFormatter dateString={date} />
         </div>
       </div>
       <div className="flex items-center">
-        <Reactions reactions={reactions} issuenumber={issuenumber}/>
+        <Reactions reactions={reactions} issuenumber={issuenumber} />
       </div>
     </>
   )

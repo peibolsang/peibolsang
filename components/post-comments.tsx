@@ -21,7 +21,7 @@ const PostComments = ({ comments, issuenumber }: Props) => {
         {comments.map((comment) => (
           <div className="border-2 border-color-gray rounded-xl">
             <div className="flex items-center bg-gray-100 rounded-t-xl p-3">
-              <Avatar name={comment.author.name} picture={comment.author.picture} />
+              <Avatar name={comment.author.name} picture={comment.author.picture} html_url={comment.author.html_url} />
               <span className="ml-1 mr-1">on</span>
               <DateFormatter dateString={comment.date} />
             </div>

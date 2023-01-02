@@ -31,7 +31,7 @@ const Reactions = ({ reactions,issuenumber }: Props) => {
               <span className="mr-3 bg-blue-100 p-1 border-2 border-blue-300 rounded-full">
                 <Link href={href}>
                   <span className="text-l mr-2" dangerouslySetInnerHTML={{ __html: icons[key] }}></span>
-                  <span className="text-l mr-2">{value}</span>
+                  <span className="text-l mr-2 text-blue-500">{value}</span>
                 </Link>
               </span>
             </div>
