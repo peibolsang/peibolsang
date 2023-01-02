@@ -31,7 +31,7 @@ export async function generateTldr(text){
       frequency_penalty: 0.0,
       presence_penalty: 1,
     });
-    return response.data.choices[0].text+"."
+    return response.data.choices[0].text
     }
     catch(err){
       return createExcerpt(text)
