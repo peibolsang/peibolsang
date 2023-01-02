@@ -37,9 +37,10 @@ export default function Post({ post, preview }: Props) {
                   {post.title} | Pablo Bermejo
                 </title>
                 <meta property="og:image" content={post.ogImage.url} />
-                <meta property="twitter:card" content={post.title} />
+                <meta property="twitter:card" content={post.ogImage.url} />
                 <meta property="twitter:image" content={post.ogImage.url} />
                 <meta property="twitter:title" content={post.title} />
+                <meta property="twitter:description" content={post.title} />
               </Head>
               <PostHeader
                 title={post.title}
