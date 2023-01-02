@@ -9,6 +9,10 @@
   @apply my-6;
 }
 
+.markdown pre {
+  @apply overflow-x-auto sm:overflow-scroll
+}
+
 .markdown li {
   @apply list-disc ml-10
 }
