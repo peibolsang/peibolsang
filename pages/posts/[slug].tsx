@@ -77,6 +77,7 @@ export async function getStaticProps({ params }: Params) {
         content,
       },
     },
+    revalidate: 60
   }
 }
 
@@ -91,7 +92,6 @@ export async function getStaticPaths() {
         },
       }
     }),
-    revalidate: 60,
     fallback: 'blocking',
   }
 }
