@@ -4,7 +4,7 @@ import Intro from '../components/intro'
 import Layout from '../components/layout'
 import { getAllPosts } from '../lib/api'
 import Head from 'next/head'
-import Post from '../interfaces/post'
+import type Post from '../interfaces/post'
 import PostPreview from '../components/post-preview'
 
 type Props = {

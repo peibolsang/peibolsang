@@ -40,14 +40,11 @@ const PostPreview = ({
       <div className="text-l">
         <DateFormatter dateString={date} />
       </div>
-
       <div
         className={markdownStyles['markdown']}
         dangerouslySetInnerHTML={{ __html: excerpt }}
       />
-      
       <Avatar name={author.name} picture={author.picture} />
-
       <div className="flex items-center mt-4">
           <span className="mr-5">
               <span className="text-l mr-1">&#x1F4AC;</span>

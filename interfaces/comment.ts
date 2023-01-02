@@ -1,4 +1,5 @@
-import Author from '../interfaces/author'
+import type Author from '../interfaces/author'
+import type Reactions from '../interfaces/reactions'
 
 type CommentType = {
   slug: {
@@ -12,16 +13,8 @@ type CommentType = {
   }
   content: string
   reactions_count: string
-  reactions:{
-    plusone: string
-    minusone: string
-    laugh: string
-    hooray: string
-    confused: string
-    heart: string
-    rocket: string
-    eyes: string
-  }
+  reactions: Reactions
+
 }
 
 export default CommentType

@@ -2,24 +2,16 @@ import type Comment from '../interfaces/comment'
 import Avatar from './avatar'
 import DateFormatter from './date-formatter'
 import Reactions from './reactions'
+import markdownStyles from './markdown-styles.module.css'
+import { USER_NAMES } from '../lib/constants'
+import { REPO_NAME } from '../lib/constants'
 
 type Props = {
-  comments: Comment[]
+  comments: Comment[],
+  issuenumber: string
 }
 
-const icons = {
-  plusone: '&#x1F44D;',
-  minusone: '&#x1F44E;',
-  laugh: '&#128512;',
-  hooray: '&#x1F389;',
-  confused: '&#x1F615;',
-  heart: '&#x2764;',
-  rocket: '&#x1F680;',
-  eyes: '&#x1F440;'
-
-}
-
-const PostComments = ({ comments }: Props) => {
+const PostComments = ({ comments, issuenumber }: Props) => {
   return (
     <section>
       <h3 className="mb-8 text-4xl md:text-4xl font-bold tracking-tighter leading-tight">
@@ -27,19 +19,24 @@ const PostComments = ({ comments }: Props) => {
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-1 md:gap-y-8 mb-6">
         {comments.map((comment) => (
-          <div className="border-2 border-color-gray p-5 rounded-xl">
-            <div className="text-l">
+          <div className="border-2 border-color-gray rounded-xl">
+            <div className="flex items-center bg-gray-100 rounded-t-xl p-3">
+              <Avatar name={comment.author.name} picture={comment.author.picture} />
+              <span className="ml-1 mr-1">on</span>
               <DateFormatter dateString={comment.date} />
             </div>
-            <Avatar name={comment.author.name} picture={comment.author.picture} />
-            <div>
-              {comment.content}
+            <div className={`pl-5 ${markdownStyles['markdown']}`} dangerouslySetInnerHTML={{ __html: comment.content }}>
             </div>
-            <div className="flex items-center mt-4">
-              <Reactions reactions={comment.reactions}/>
+            <div className="flex items-center ml-5">
+              <Reactions reactions={comment.reactions} issuenumber={issuenumber}/>
             </div>
           </div>
         ))}
+        <div className="flex justify-center mb-10 mt-10">
+          <button className="bg-black rounded-xl text-white py-2 px-4 max-w-sm" onClick={() => window.location.href = `https://github.com/${USER_NAMES[0]}/${REPO_NAME}/issues/${issuenumber}#issuecomment-new` }>
+            Leave a New Comment
+          </button>
+        </div>
       </div>
     </section>
   )

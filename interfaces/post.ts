@@ -1,5 +1,6 @@
-import Author from '../interfaces/author'
-import Comment from '../interfaces/comment'
+import type Author from '../interfaces/author'
+import type Comment from '../interfaces/comment'
+import type Reactions from '../interfaces/reactions'
 
 type PostType = {
   slug: {
@@ -16,16 +17,7 @@ type PostType = {
   content: string
   comments_count: string
   reactions_count: string
-  reactions:{
-    plusone: string
-    minusone: string
-    laugh: string
-    hooray: string
-    confused: string
-    heart: string
-    rocket: string
-    eyes: string
-  }
+  reactions: Reactions
   comments: Array<Comment>
 }
 

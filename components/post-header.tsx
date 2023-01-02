@@ -8,31 +8,11 @@ type Props = {
   title: string
   date: string
   author: Author
-  reactions:{
-    plusone: string
-    minusone: string
-    laugh: string
-    hooray: string
-    confused: string
-    heart: string
-    rocket: string
-    eyes: string
-  }
+  issuenumber: string
+  reactions: Reactions
 }
 
-const icons = {
-  plusone: '&#x1F44D;',
-  minusone: '&#x1F44E;',
-  laugh: '&#128512;',
-  hooray: '&#x1F389;',
-  confused: '&#x1F615;',
-  heart: '&#x2764;',
-  rocket: '&#x1F680;',
-  eyes: '&#x1F440;'
-
-}
-
-const PostHeader = ({ title, date, author, reactions }: Props) => {
+const PostHeader = ({ title, date, author, issuenumber, reactions }: Props) => {
   return (
     <>
       <PostTitle>{title}</PostTitle>
@@ -43,11 +23,13 @@ const PostHeader = ({ title, date, author, reactions }: Props) => {
         <div className="block md:hidden mb-6">
           <Avatar name={author.name} picture={author.picture} />
         </div>
-        <div className="text-l">
+        <div className="text-l mb-5">
           <DateFormatter dateString={date} />
         </div>
       </div>
-      <Reactions reactions={reactions}/>
+      <div className="flex items-center">
+        <Reactions reactions={reactions} issuenumber={issuenumber}/>
+      </div>
     </>
   )
 }

@@ -1,18 +1,11 @@
-import Avatar from './avatar'
-import DateFormatter from './date-formatter'
-import PostTitle from './post-title'
+import Link from 'next/link'
+import type Reactions from '../interfaces/reactions'
+import { USER_NAMES } from '../lib/constants'
+import { REPO_NAME } from '../lib/constants'
 
 type Props = {
-  reactions:{
-    plusone: string
-    minusone: string
-    laugh: string
-    hooray: string
-    confused: string
-    heart: string
-    rocket: string
-    eyes: string
-  }
+  reactions: Reactions,
+  issuenumber: string
 }
 
 const icons = {
@@ -23,26 +16,37 @@ const icons = {
   confused: '&#x1F615;',
   heart: '&#x2764;',
   rocket: '&#x1F680;',
-  eyes: '&#x1F440;'
-
+  eyes: '&#x1F440;',
+  new: '&#x1F642;'
 }
 
-const Reactions = ({ reactions }: Props) => {
+const Reactions = ({ reactions,issuenumber }: Props) => {
+  const href=`https://github.com/${USER_NAMES[0]}/${REPO_NAME}/issues/${issuenumber}#issuecomment-new`
   return (
     <>
-    <div className="mt-5">
       {Object.entries(reactions).map(([key, value]) => {
         if (value.toString() !== "0") {
           return (
-            <span className="mr-5 mt-5">
-              <span className="text-l mr-1" dangerouslySetInnerHTML={{ __html: icons[key] }}></span>
-              <span className="text-l mr-1">{value}</span>
-            </span>
+            <div className="mb-5">
+              <span className="mr-3 bg-blue-100 p-1 border-2 border-blue-300 rounded-full">
+                <Link href={href}>
+                  <span className="text-l mr-2" dangerouslySetInnerHTML={{ __html: icons[key] }}></span>
+                  <span className="text-l mr-2">{value}</span>
+                </Link>
+              </span>
+            </div>
           );
         }
         return null;
       })}
-    </div>
+      <div className="mb-5">
+        <span className="mr-3 bg-gray-100 p-1 border-2 border-gray-300 rounded-full">
+          <Link href={href}>
+              <span className="text-l mr-2" dangerouslySetInnerHTML={{ __html: icons.new }}></span>
+              <span className="text-l mr-2">+</span>
+          </Link>
+        </span>
+      </div>
     </>
   )
 }

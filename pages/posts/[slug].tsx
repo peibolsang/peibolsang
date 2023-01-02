@@ -42,6 +42,7 @@ export default function Post({ post, preview }: Props) {
                 title={post.title}
                 date={post.date}
                 author={post.author}
+                issuenumber={post.slug.number}
                 reactions={post.reactions}
               />
               <PostBody content={post.content} />
@@ -51,7 +52,7 @@ export default function Post({ post, preview }: Props) {
       </Container>
       <Container>
         <div className="border-t-2 border-slate-200 pt-5">
-          <PostComments comments={post.comments} />
+          <PostComments comments={post.comments} issuenumber={post.slug.number} />
         </div>
       </Container>
     </Layout>
