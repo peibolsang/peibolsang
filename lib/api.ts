@@ -6,6 +6,7 @@ import { MAX_WORDS } from './constants'
 import { USER_NAMES } from './constants'
 import { REPO_NAME } from './constants'
 import { LABEL } from './constants'
+import {HOME_OG_IMAGE_URL} from './constants'
 import markdownToHtml from '../lib/markdownToHtml'
 
 /*
@@ -43,7 +44,7 @@ export async function getPostFromGitHubIssue(item) {
     author: issueauthor,
     excerpt: await markdownToHtml(createExcerpt(item.body) || ''),
     ogImage: {
-      url: item.user.avatar_url
+      url: HOME_OG_IMAGE_URL
     },
     content: item.body,
     comments_count: item.comments,
@@ -122,7 +123,7 @@ export async function getCommentFromGitHubIssue(item) {
     date: item.created_at,
     author: commentauthor,
     ogImage: {
-      url: item.user.avatar_url
+      url: HOME_OG_IMAGE_URL
     },
     content: await markdownToHtml(item.body || ''),
     reactions_count: item.reactions.total_count,
