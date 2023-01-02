@@ -27,7 +27,7 @@ const PostComments = ({ comments, issuenumber }: Props) => {
             </div>
             <div className={`pl-5 ${markdownStyles['markdown']}`} dangerouslySetInnerHTML={{ __html: comment.content }}>
             </div>
-            <div className="flex items-center ml-5">
+            <div className="sm:flex flex-row md:flex items-center ml-5">
               <Reactions reactions={comment.reactions} issuenumber={issuenumber}/>
             </div>
           </div>

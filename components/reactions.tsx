@@ -28,24 +28,22 @@ const Reactions = ({ reactions,issuenumber }: Props) => {
         if (value.toString() !== "0") {
           return (
             <div className="mb-5">
-              <span className="mr-3 bg-blue-100 p-1 border-2 border-blue-300 rounded-full">
+              <div className="mr-3 bg-blue-100 p-1 border-2 border-blue-300 rounded-full">
                 <Link href={href}>
-                  <span className="text-l mr-2" dangerouslySetInnerHTML={{ __html: icons[key] }}></span>
-                  <span className="text-l mr-2 text-blue-500">{value}</span>
+                  <span className="text-l mr-2 text-blue-500" dangerouslySetInnerHTML={{ __html: `${icons[key]} ${value}` }}></span>
                 </Link>
-              </span>
+              </div>
             </div>
           );
         }
         return null;
       })}
       <div className="mb-5">
-        <span className="mr-3 bg-gray-100 p-1 border-2 border-gray-300 rounded-full">
+        <div className="mr-3 bg-gray-100 p-1 border-2 border-gray-300 rounded-full">
           <Link href={href}>
-              <span className="text-l mr-2" dangerouslySetInnerHTML={{ __html: icons.new }}></span>
-              <span className="text-l mr-2">+</span>
+              <span className="text-l mr-2" dangerouslySetInnerHTML={{ __html: `${icons.new} +` }}></span>
           </Link>
-        </span>
+        </div>
       </div>
     </>
   )

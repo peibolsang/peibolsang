@@ -27,7 +27,7 @@ const PostHeader = ({ title, date, author, issuenumber, reactions }: Props) => {
           <DateFormatter dateString={date} />
         </div>
       </div>
-      <div className="flex items-center">
+      <div className="md:flex items-center sm:flex flex-row">
         <Reactions reactions={reactions} issuenumber={issuenumber} />
       </div>
     </>
