@@ -21,6 +21,7 @@ export async function generateTldr(text){
     apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
   });
   const openai = new OpenAIApi(configuration);
+  /*
   try{
     const response = await openai.createCompletion({
       model: "text-davinci-003",
@@ -34,8 +35,9 @@ export async function generateTldr(text){
     return response.data.choices[0].text
     }
     catch(err){
+  */
       return createExcerpt(text)
-    }
+  // }
 }
 
 
