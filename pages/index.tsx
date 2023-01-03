@@ -18,14 +18,15 @@ export default function Index({ allPosts }: Props) {
     <>
       <Layout>
         <Head>
-          <title>Pablo Bermejo</title>
+          <title>Pablo Bermejo's Blog</title>
         </Head>
         <Container>
           <Intro/>
           <h3 className="mb-12 text-4xl md:text-4xl font-bold tracking-tighter leading-tight">
             Featured Story
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-1 md:gap-x-16 lg:gap-x-32 gap-y-20 mb-12 border-2 border-gray-300 rounded-xl p-5">
+          <div className="grid grid-cols-1 md:grid-cols-1 md:gap-x-16 lg:gap-x-32 gap-y-20 mb-12 rounded-xl p-1 transition-all w-full bg-gradient-to-r from-[#FDE68A] via-[#FCA5A5] to-[#FECACA]">
+            <div className="h-full w-full bg-white p-5 rounded-xl ">
             {heroPost && (
               <PostPreview
                 title={heroPost.title}
@@ -37,6 +38,7 @@ export default function Index({ allPosts }: Props) {
                 reactions_count={heroPost.reactions_count}
               />
             )}
+            </div>
           </div>
           {morePosts.length > 0 && <MoreStories posts={morePosts} />}
         </Container>

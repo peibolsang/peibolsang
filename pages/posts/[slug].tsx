@@ -34,7 +34,7 @@ export default function Post({ post, preview }: Props) {
             <article className="mb-16">
               <Head>
                 <title>
-                  {post.title} | Pablo Bermejo
+                  {post.title} | Pablo Bermejo's Blog
                 </title>
                 <meta property="og:image" content={post.ogImage.url} />
                 <meta name="twitter:card" content="summary_large_image" />

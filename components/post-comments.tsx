@@ -21,14 +21,14 @@ const PostComments = ({ comments, issuenumber }: Props) => {
         {comments.map((comment) => (
           <div className="border-2 border-color-gray rounded-xl">
             <div className="flex items-center bg-gray-100 rounded-t-xl p-3">
-              <Avatar name={comment.author.name} picture={comment.author.picture} html_url={comment.author.html_url} />
+              <Avatar key={comment.date} name={comment.author.name} picture={comment.author.picture} html_url={comment.author.html_url} />
               <span className="ml-1 mr-1">on</span>
-              <DateFormatter dateString={comment.date} />
+              <DateFormatter key={comment.date} dateString={comment.date} />
             </div>
             <div className={`pl-5 ${markdownStyles['markdown']}`} dangerouslySetInnerHTML={{ __html: comment.content }}>
             </div>
             <div className="sm:flex flex-row md:flex items-center ml-5">
-              <Reactions reactions={comment.reactions} issuenumber={issuenumber}/>
+              <Reactions key={comment.date} reactions={comment.reactions} issuenumber={issuenumber}/>
             </div>
           </div>
         ))}
