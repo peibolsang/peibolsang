@@ -12,7 +12,7 @@ type Props = {
 }
 
 export default function Index({ allPosts }: Props) {
-  const heroPost = allPosts[0]
+  const featuredPost = allPosts[0]
   const morePosts = allPosts.slice(1)
   return (
     <>
@@ -27,17 +27,20 @@ export default function Index({ allPosts }: Props) {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-1 md:gap-x-16 lg:gap-x-32 gap-y-20 mb-12 rounded-xl p-1 transition-all w-full bg-gradient-to-r from-[#FDE68A] via-[#FCA5A5] to-[#FECACA]">
             <div className="h-full w-full bg-white p-5 rounded-xl ">
-            {heroPost && (
-              <PostPreview
-                title={heroPost.title}
-                date={heroPost.date}
-                author={heroPost.author}
-                slug={heroPost.slug}
-                excerpt={heroPost.excerpt}
-                comments_count={heroPost.comments_count}
-                reactions_count={heroPost.reactions_count}
-              />
-            )}
+              {featuredPost.title ?
+                  (<PostPreview
+                    title={featuredPost.title}
+                    date={featuredPost.date}
+                    author={featuredPost.author}
+                    slug={featuredPost.slug}
+                    excerpt={featuredPost.excerpt}
+                    comments_count={featuredPost.comments_count}
+                    reactions_count={featuredPost.reactions_count}
+                  />
+                  )
+                 :
+                 (<div>{featuredPost.toString()}</div>)
+              }
             </div>
           </div>
           {morePosts.length > 0 && <MoreStories posts={morePosts} />}
@@ -50,8 +53,14 @@ export default function Index({ allPosts }: Props) {
 export const getStaticProps = async () => {
   const allPosts = await getAllPosts()
 
-  return {
-    props: { allPosts },
+  const props = allPosts? 
+    (allPosts[0]? allPosts : ["No posts found 🫣"]) 
+    : 
+    (["Ooooops 🥺. Couldn't fetch posts. There was an error calling the GitHub Issues API"])
+
+  return  {
+    props: { allPosts: props},
     revalidate: 60,
   }
+    
 }

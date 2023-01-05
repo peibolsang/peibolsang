@@ -27,10 +27,10 @@ const Reactions = ({ reactions,issuenumber }: Props) => {
       {Object.entries(reactions).map(([key, value]) => {
         if (value.toString() !== "0") {
           return (
-            <div className="mb-5">
+            <div className="mb-5 flex items-center">
               <div className="mr-3 bg-blue-100 p-1 border-2 border-blue-300 rounded-full">
                 <Link href={href}>
-                  <span className="text-l mr-2 text-blue-500" dangerouslySetInnerHTML={{ __html: `${icons[key]} ${value}` }}></span>
+                  <span className="text-l mr-2 text-blue-500 text-sm" dangerouslySetInnerHTML={{ __html: `${icons[key]} ${value}` }}></span>
                 </Link>
               </div>
             </div>
@@ -38,10 +38,10 @@ const Reactions = ({ reactions,issuenumber }: Props) => {
         }
         return null;
       })}
-      <div className="mb-5">
+      <div className="mb-5 flex items-center">
         <div className="mr-3 bg-gray-100 p-1 border-2 border-gray-300 rounded-full">
           <Link href={href}>
-              <span className="text-l mr-2" dangerouslySetInnerHTML={{ __html: `${icons.new} +` }}></span>
+              <span className="text-l mr-2 text-sm" dangerouslySetInnerHTML={{ __html: `${icons.new} +` }}></span>
           </Link>
         </div>
       </div>

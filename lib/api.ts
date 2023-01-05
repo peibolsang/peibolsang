@@ -6,6 +6,7 @@ import { MAX_WORDS } from './constants'
 import { USER_NAMES } from './constants'
 import { REPO_NAME } from './constants'
 import { LABEL } from './constants'
+import {USE_OPEN_AI} from './constants'
 import {HOME_OG_IMAGE_URL} from './constants'
 import markdownToHtml from '../lib/markdownToHtml'
 import { Configuration, OpenAIApi } from 'openai';
@@ -21,23 +22,25 @@ export async function generateTldr(text){
     apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
   });
   const openai = new OpenAIApi(configuration);
-  /*
-  try{
-    const response = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: `Summarize the following text : ${text}\n\n`,
-      temperature: 0.7,
-      max_tokens: 160,
-      top_p: 1.0,
-      frequency_penalty: 0.0,
-      presence_penalty: 1,
-    });
-    return response.data.choices[0].text
+  
+  if (USE_OPEN_AI){
+    try{
+      const response = await openai.createCompletion({
+        model: "text-davinci-003",
+        prompt: `Summarize the following text : ${text}\n\n`,
+        temperature: 0.7,
+        max_tokens: 160,
+        top_p: 1.0,
+        frequency_penalty: 0.0,
+        presence_penalty: 1,
+      });
+      return response.data.choices[0].text
+      }
+      catch(err){
+        console.log("Error calling OpenAI API: "+err)
     }
-    catch(err){
-  */
-      return createExcerpt(text)
-  // }
+  }
+  return createExcerpt(text)
 }
 
 
@@ -61,6 +64,7 @@ export async function getPostFromGitHubIssue(item) {
   }
 
   const excerpt = await generateTldr(item.body)
+
   const post: PostType = {
     slug: {
       number: item.number,
@@ -97,24 +101,51 @@ function createExcerpt(text) {
 }
 
 export async function getPost(number){
-  // Make the API request
-  const response = await fetch(`https://api.github.com/repos/${USER_NAMES[0]}/${REPO_NAME}/issues/${number}`);
-  const data = await response.json();
-  return getPostFromGitHubIssue(data);
+
+  const params = process.env.NEXT_PUBLIC_GITHUB_TOKEN ? 
+  { method:'GET',
+    headers: {
+      'Authorization': 'Bearer ' + process.env.NEXT_PUBLIC_GITHUB_TOKEN
+    }
+  }
+  :
+  {}
+
+  try{
+    // Make the API request
+    const response = await fetch(`https://api.github.com/repos/${USER_NAMES[0]}/${REPO_NAME}/issues/${number}`,params);
+    const data = await response.json();
+    return getPostFromGitHubIssue(data);
+  }
+  catch (error){
+    console.log(error)
+  }
 }
 
 export async function getAllPosts() {
 
-  // Make the API request
-  const response = await fetch(`https://api.github.com/repos/${USER_NAMES[0]}/${REPO_NAME}/issues?labels=${LABEL}`);
+  const params = process.env.NEXT_PUBLIC_GITHUB_TOKEN ? 
+  { method:'GET',
+    headers: {
+      'Authorization': 'Bearer ' + process.env.NEXT_PUBLIC_GITHUB_TOKEN
+    }
+  }
+  :
+  {}
 
-  // Parse the response as JSON
-  const data = await response.json();
-  const posts = Promise.all(data
+  try{
+    // Make the API request
+    const response = await fetch(`https://api.github.com/repos/${USER_NAMES[0]}/${REPO_NAME}/issues`,params);
+    // Parse the response as JSON
+    const data = await response.json();
+    const posts = Promise.all(data
       .filter(item => USER_NAMES.includes(item.user.login))
       .map(async (item)=> await getPostFromGitHubIssue(item))
-  )
-  return posts
+    )
+    return posts
+  } catch(error){
+    console.log(error)
+  }
 }
 
 /*
@@ -160,13 +191,27 @@ export async function getCommentFromGitHubIssue(item) {
 }
 
 export async function getPostComments(number){
-  // Make the API request
-  const response = await fetch(`https://api.github.com/repos/${USER_NAMES[0]}/${REPO_NAME}/issues/${number}/comments`);
+  const params = process.env.NEXT_PUBLIC_GITHUB_TOKEN ? 
+  { method:'GET',
+    headers: {
+      'Authorization': 'Bearer ' + process.env.NEXT_PUBLIC_GITHUB_TOKEN
+    }
+  }
+  :
+  {}
+
+  try{
+    // Make the API request
+    const response = await fetch(`https://api.github.com/repos/${USER_NAMES[0]}/${REPO_NAME}/issues/${number}/comments`,params);
   
-  const data = await response.json();
-  const comments = Promise.all(data
-    .map(async (item)=> await getCommentFromGitHubIssue(item))
-  )
-  return comments
+    const data = await response.json();
+    const comments = Promise.all(data
+      .map(async (item)=> await getCommentFromGitHubIssue(item))
+    )
+    return comments
+  } catch(error){
+    console.log(error)
+  }
+  
 }
 
