@@ -135,7 +135,7 @@ export async function getAllPosts() {
 
   try{
     // Make the API request
-    const response = await fetch(`https://api.github.com/repos/${USER_NAMES[0]}/${REPO_NAME}/issues`,params);
+    const response = await fetch(`https://api.github.com/repos/${USER_NAMES[0]}/${REPO_NAME}/issues?labels=${LABEL}`,params);
     // Parse the response as JSON
     const data = await response.json();
     const posts = Promise.all(data
