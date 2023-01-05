@@ -11,6 +11,28 @@ import {HOME_OG_IMAGE_URL} from './constants'
 import markdownToHtml from '../lib/markdownToHtml'
 import { Configuration, OpenAIApi } from 'openai';
 
+
+/* 
+This function is used all over the place. The strict rate limits of the GitHub API
+makes it hard to develeop and test locally, so we use the personal GitHub Token from the local env.
+This gives us better API rate limits, but it's not necessary on the server (by now) 
+*/
+
+export async function fetchGitHubAPI(url: string){
+  const params =  
+    { method:'GET',
+      headers: 
+        process.env.NEXT_PUBLIC_GITHUB_TOKEN ? {
+        'Authorization': 'Bearer ' + process.env.NEXT_PUBLIC_GITHUB_TOKEN
+        }
+        :
+        {}
+    }
+  const response = await fetch(url,params);
+  return response
+}
+
+
 /*
  *
  POST FUNCTIONS
@@ -18,14 +40,20 @@ import { Configuration, OpenAIApi } from 'openai';
  */
 
 export async function generateTldr(text){
-  const configuration = new Configuration({
+
+  // OpenAI API necessafry configuration as per the docs
+  const openAIConfiguration = new Configuration({
     apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
   });
-  const openai = new OpenAIApi(configuration);
+  const openAIAPI = new OpenAIApi(openAIConfiguration);
   
+  // Feature flag for using OpenAI API to create the blog excerpt
+  // On = Call OpenAI API to summarize the blog
+  // Off = Create an excerpt using just the fist MAX_WORDS of the blog post
+
   if (USE_OPEN_AI){
     try{
-      const response = await openai.createCompletion({
+      const response = await openAIAPI.createCompletion({
         model: "text-davinci-003",
         prompt: `Summarize the following text : ${text}\n\n`,
         temperature: 0.7,
@@ -40,6 +68,7 @@ export async function generateTldr(text){
         console.log("Error calling OpenAI API: "+err)
     }
   }
+
   return createExcerpt(text)
 }
 
@@ -101,20 +130,12 @@ function createExcerpt(text) {
 }
 
 export async function getPost(number){
-
-  const params = process.env.NEXT_PUBLIC_GITHUB_TOKEN ? 
-  { method:'GET',
-    headers: {
-      'Authorization': 'Bearer ' + process.env.NEXT_PUBLIC_GITHUB_TOKEN
-    }
-  }
-  :
-  {}
-
   try{
     // Make the API request
-    const response = await fetch(`https://api.github.com/repos/${USER_NAMES[0]}/${REPO_NAME}/issues/${number}`,params);
+    const response = await fetchGitHubAPI(`https://api.github.com/repos/${USER_NAMES[0]}/${REPO_NAME}/issues/${number}`);
     const data = await response.json();
+
+    // We transform the GitHub Issue into a Blog post
     return getPostFromGitHubIssue(data);
   }
   catch (error){
@@ -123,21 +144,13 @@ export async function getPost(number){
 }
 
 export async function getAllPosts() {
-
-  const params = process.env.NEXT_PUBLIC_GITHUB_TOKEN ? 
-  { method:'GET',
-    headers: {
-      'Authorization': 'Bearer ' + process.env.NEXT_PUBLIC_GITHUB_TOKEN
-    }
-  }
-  :
-  {}
-
-  try{
+  try {
     // Make the API request
-    const response = await fetch(`https://api.github.com/repos/${USER_NAMES[0]}/${REPO_NAME}/issues?labels=${LABEL}`,params);
-    // Parse the response as JSON
+    const response = await fetchGitHubAPI(`https://api.github.com/repos/${USER_NAMES[0]}/${REPO_NAME}/issues?labels=${LABEL}`);
     const data = await response.json();
+
+    // We only return posts created by the allowed user
+    // Transforming GitHub Issues into Blog posts
     const posts = Promise.all(data
       .filter(item => USER_NAMES.includes(item.user.login))
       .map(async (item)=> await getPostFromGitHubIssue(item))
@@ -191,20 +204,12 @@ export async function getCommentFromGitHubIssue(item) {
 }
 
 export async function getPostComments(number){
-  const params = process.env.NEXT_PUBLIC_GITHUB_TOKEN ? 
-  { method:'GET',
-    headers: {
-      'Authorization': 'Bearer ' + process.env.NEXT_PUBLIC_GITHUB_TOKEN
-    }
-  }
-  :
-  {}
-
-  try{
+  try {
     // Make the API request
-    const response = await fetch(`https://api.github.com/repos/${USER_NAMES[0]}/${REPO_NAME}/issues/${number}/comments`,params);
-  
+    const response = await fetchGitHubAPI(`https://api.github.com/repos/${USER_NAMES[0]}/${REPO_NAME}/issues/${number}/comments`);
     const data = await response.json();
+
+    // We map Issue comments into Blog comments
     const comments = Promise.all(data
       .map(async (item)=> await getCommentFromGitHubIssue(item))
     )
@@ -212,6 +217,5 @@ export async function getPostComments(number){
   } catch(error){
     console.log(error)
   }
-  
 }
 

@@ -15,7 +15,7 @@ const PostComments = ({ comments, issuenumber }: Props) => {
   return (
     <section>
       <h3 className="mb-8 text-4xl md:text-4xl font-bold tracking-tighter leading-tight">
-        Comments
+        Comments {comments.length>0 ? ` (${comments.length})`: ""}
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-1 md:gap-y-8 mb-6">
         {

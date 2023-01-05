@@ -20,9 +20,6 @@ const PostHeader = ({ title, date, author, issuenumber, reactions }: Props) => {
         <Avatar name={author.name} picture={author.picture} html_url={author.html_url} />
       </div>
       <div>
-        <div className="block md:hidden mb-6">
-          <Avatar name={author.name} picture={author.picture} html_url={author.html_url} />
-        </div>
         <div className="text-l mb-5">
           <DateFormatter dateString={date} />
         </div>
