@@ -1,6 +1,6 @@
 ```javascript
 const me = '👶🏻'
-while (me!='e💀'){
+while (me!='💀'){
     //TODO
 }
 ```
