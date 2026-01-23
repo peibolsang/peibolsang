@@ -1,4 +1,7 @@
 ## Hi there 👋
+I am a product leader, distinguished technologist, and writer. I've been building enterprise software platforms and applications for the last 20 years, and I love sharing what I learn.
+
+I create a lasting difference in the teams I work with as we build technology together. [Lots of thoughts on my personal website!](https://berme.io/)
 
 <!--
 **peibolsang/peibolsang** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
