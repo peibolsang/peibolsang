@@ -1,0 +1,84 @@
+name: Publish Scheduled Issues
+
+on:
+  schedule:
+    - cron: "5 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  publish-scheduled-issues:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Publish issues scheduled for today
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const today = new Date().toISOString().slice(0, 10);
+
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open",
+              labels: "ready",
+              per_page: 100,
+            });
+
+            let inspected = 0;
+            let published = 0;
+            let skipped = 0;
+
+            for (const issue of issues) {
+              if (issue.pull_request) continue;
+
+              inspected += 1;
+
+              const body = issue.body || "";
+              const frontmatterMatch = body.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+
+              if (!frontmatterMatch) {
+                skipped += 1;
+                continue;
+              }
+
+              const scheduledMatch = frontmatterMatch[1].match(
+                /^scheduled:\s*(\d{4}-\d{2}-\d{2})\s*$/m
+              );
+
+              if (!scheduledMatch) {
+                skipped += 1;
+                continue;
+              }
+
+              const scheduled = scheduledMatch[1];
+              if (scheduled !== today) {
+                skipped += 1;
+                continue;
+              }
+
+              const currentLabels = issue.labels
+                .map(label => (typeof label === "string" ? label : label.name))
+                .filter(Boolean);
+
+              const nextLabels = currentLabels.filter(
+                name => name !== "ready" && name !== "published"
+              );
+              nextLabels.push("published");
+
+              await github.rest.issues.setLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                labels: nextLabels,
+              });
+
+              published += 1;
+              core.info(`Published issue #${issue.number} (${issue.title})`);
+            }
+
+            core.info(`Inspected ${inspected} ready issues.`);
+            core.info(`Published ${published} issues for ${today}.`);
+            core.info(`Skipped ${skipped} issues.`);
