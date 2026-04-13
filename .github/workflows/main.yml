@@ -17,7 +17,9 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const today = new Date().toISOString().slice(0, 10);
+            const today = new Intl.DateTimeFormat("en-CA", {
+              timeZone: "Europe/Madrid",
+            }).format(new Date());
 
             const issues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner,
@@ -44,7 +46,8 @@ jobs:
                 continue;
               }
 
-              const scheduledMatch = frontmatterMatch[1].match(
+              const frontmatter = frontmatterMatch[1];
+              const scheduledMatch = frontmatter.match(
                 /^scheduled:\s*(\d{4}-\d{2}-\d{2})\s*$/m
               );
 
@@ -59,6 +62,20 @@ jobs:
                 continue;
               }
 
+              let nextFrontmatter = frontmatter
+                .replace(/^scheduled:\s*\d{4}-\d{2}-\d{2}\s*$(\r?\n)?/m, "")
+                .replace(/^publishedAt:\s*\d{4}-\d{2}-\d{2}\s*$(\r?\n)?/m, "")
+                .trim();
+
+              nextFrontmatter = nextFrontmatter
+                ? `${nextFrontmatter}\npublishedAt: ${today}`
+                : `publishedAt: ${today}`;
+
+              const nextBody = body.replace(
+                frontmatterMatch[0],
+                `---\n${nextFrontmatter}\n---`
+              );
+
               const currentLabels = issue.labels
                 .map(label => (typeof label === "string" ? label : label.name))
                 .filter(Boolean);
@@ -68,10 +85,11 @@ jobs:
               );
               nextLabels.push("published");
 
-              await github.rest.issues.setLabels({
+              await github.rest.issues.update({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issue.number,
+                body: nextBody,
                 labels: nextLabels,
               });
 
