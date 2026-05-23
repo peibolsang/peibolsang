@@ -43,28 +43,33 @@ jobs:
 
               if (!frontmatterMatch) {
                 skipped += 1;
+                core.info(`Skipped issue #${issue.number}: missing frontmatter.`);
                 continue;
               }
 
               const frontmatter = frontmatterMatch[1];
               const scheduledMatch = frontmatter.match(
-                /^scheduled:\s*(\d{4}-\d{2}-\d{2})\s*$/m
+                /^scheduled:\s*['"]?(\d{4}-\d{2}-\d{2})['"]?\s*$/m
               );
 
               if (!scheduledMatch) {
                 skipped += 1;
+                core.info(`Skipped issue #${issue.number}: missing scheduled date.`);
                 continue;
               }
 
               const scheduled = scheduledMatch[1];
               if (scheduled !== today) {
                 skipped += 1;
+                core.info(
+                  `Skipped issue #${issue.number}: scheduled for ${scheduled}, not ${today}.`
+                );
                 continue;
               }
 
               let nextFrontmatter = frontmatter
-                .replace(/^scheduled:\s*\d{4}-\d{2}-\d{2}\s*$(\r?\n)?/m, "")
-                .replace(/^publishedAt:\s*\d{4}-\d{2}-\d{2}\s*$(\r?\n)?/m, "")
+                .replace(/^scheduled:\s*['"]?\d{4}-\d{2}-\d{2}['"]?\s*$(\r?\n)?/m, "")
+                .replace(/^publishedAt:\s*['"]?\d{4}-\d{2}-\d{2}['"]?\s*$(\r?\n)?/m, "")
                 .trim();
 
               nextFrontmatter = nextFrontmatter
